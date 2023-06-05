@@ -1,0 +1,119 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(HotelApp());
+
+class HotelApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Hotel App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HotelHomePage(),
+    );
+  }
+}
+
+class HotelHomePage extends StatefulWidget {
+  @override
+  _HotelHomePageState createState() => _HotelHomePageState();
+}
+
+class _HotelHomePageState extends State<HotelHomePage> {
+  String selectedMenuItem = '';
+
+  void _handleMenuItemTap(String itemName) {
+    setState(() {
+      selectedMenuItem = itemName;
+    });
+    Navigator.pop(context); // Close the drawer
+    // Add your logic here for handling the selected menu item and submitting the response
+    print('Selected menu item: $itemName');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Hotel App'),
+      ),
+      drawer: HotelAppMenu(
+        handleMenuItemTap: _handleMenuItemTap,
+      ),
+      body: Center(
+        child: Text('Selected menu item: $selectedMenuItem'),
+      ),
+    );
+  }
+}
+
+class HotelAppMenu extends StatelessWidget {
+  final Function(String) handleMenuItemTap;
+
+  HotelAppMenu({required this.handleMenuItemTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(
+            child: Text(
+              'Hotel App Menu',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text('Home'),
+            onTap: () {
+              handleMenuItemTap('Home');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.room_service),
+            title: Text('Services'),
+            onTap: () {
+              handleMenuItemTap('Services');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.room),
+            title: Text('Rooms'),
+            onTap: () {
+              handleMenuItemTap('Rooms');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.event_note),
+            title: Text('Events'),
+            onTap: () {
+              handleMenuItemTap('Events');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.restaurant),
+            title: Text('Dining'),
+            onTap: () {
+              handleMenuItemTap('Dining');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.info),
+            title: Text('About'),
+            onTap: () {
+              handleMenuItemTap('About');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
