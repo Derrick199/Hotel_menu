@@ -1,0 +1,44 @@
+#cd hotel_app_backend
+#python manage.py startapp hotel_api
+
+from django.db import models
+
+class MenuItem(models.Model):
+    name = models.CharField(max_length=100)
+    icon = models.CharField(max_length=100)
+    table_no = models.CharField(max_length=100)
+   
+    def __str__(self):
+        return self.name
+python manage.py makemigrations
+python manage.py migrate
+from django.shortcuts import get_object_or_404
+from rest_framework import generics
+from .models import MenuItem
+from .serializers import MenuItemSerializer
+
+class MenuItemList(generics.ListAPIView):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+
+class MenuItemDetail(generics.RetrieveAPIView):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+from rest_framework import serializers
+from .models import MenuItem
+
+class MenuItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuItem
+        fields = '__all__'
+from django.urls import path, include
+from hotel_api.views import MenuItemList, MenuItemDetail
+
+urlpatterns = [
+    path('api/menu-items/', MenuItemList.as_view(), name='menu-item-list'),
+    path('api/menu-items/<int:pk>/', MenuItemDetail.as_view(), name='menu-item-detail'),
+    ]
+
+#run server
+#python manage.py runserver
+
